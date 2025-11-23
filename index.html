@@ -788,643 +788,861 @@
             });
         });
     </script>
-<!-- ASW Multilingual Chatbot -->
-<div id="asw-chatbot">
-    <!-- Chat Header -->
-    <div class="chat-header">
-        <div class="header-left">
-            <div class="chat-avatar">ASW</div>
-            <div class="chat-info">
-                <div class="chat-title">ASW Assistant</div>
-                <div class="chat-status">Online • <span id="current-language">English</span></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASW Multilingual Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Chat Bot Styles */
+        #asw-chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 380px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 10000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        #asw-chatbot.active {
+            display: flex;
+        }
+
+        .chat-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .toggle-icon {
+            font-size: 18px;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .chat-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .chat-status {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn, .minimize-btn, .close-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .lang-btn:hover, .minimize-btn:hover, .close-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .language-menu {
+            position: absolute;
+            top: 60px;
+            right: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            z-index: 10001;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .language-menu.active {
+            display: flex;
+        }
+
+        .lang-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            font-size: 14px;
+        }
+
+        .lang-option:hover {
+            background: #f8f9fa;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+
+        .bot-message {
+            justify-content: flex-start;
+        }
+
+        .user-message {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .bot-message .message-content {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 18px 18px 18px 4px;
+        }
+
+        .user-message .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+        }
+
+        .quick-actions {
+            padding: 15px;
+            border-top: 1px solid #e1e5e9;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: white;
+        }
+
+        .quick-btn {
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border: 1px solid #e1e5e9;
+            border-radius: 20px;
+            color: #495057;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .quick-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .chat-input-container {
+            padding: 15px;
+            border-top: 1px solid #e1e5e9;
+            display: flex;
+            gap: 12px;
+            background: white;
+        }
+
+        .chat-input-container input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e1e5e9;
+            border-radius: 25px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input-container input:focus {
+            border-color: #667eea;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* RTL Support for Arabic */
+        [dir="rtl"] .bot-message .message-content {
+            border-radius: 18px 18px 4px 18px;
+        }
+
+        [dir="rtl"] .user-message .message-content {
+            border-radius: 18px 4px 18px 18px;
+        }
+        
+        /* Improved message styling */
+        .message-content strong {
+            color: #000000;
+            font-weight: 600;
+        }
+        
+        .message-content .category {
+            margin-top: 8px;
+            margin-bottom: 4px;
+        }
+        
+        .message-content .subcategory {
+            margin-left: 15px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ASW Multilingual Chatbot -->
+    <div id="asw-chatbot">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <div class="header-left">
+                <div class="chat-avatar">ASW</div>
+                <div class="chat-info">
+                    <div class="chat-title">ASW Assistant</div>
+                    <div class="chat-status">Online • <span id="current-language">English</span></div>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="lang-btn" id="langBtn">🌐</button>
+                <button class="minimize-btn" id="minimizeBtn">−</button>
+                <button class="close-btn" id="closeBtn">×</button>
             </div>
         </div>
-        <div class="header-right">
-            <button class="lang-btn" onclick="toggleLanguageMenu()">🌐</button>
-            <button class="minimize-btn" onclick="toggleChat()">−</button>
-            <button class="close-btn" onclick="closeChat()">×</button>
+
+        <!-- Language Selector -->
+        <div class="language-menu" id="languageMenu">
+            <div class="lang-option" data-lang="en">English</div>
+            <div class="lang-option" data-lang="ar">العربية</div>
+            <div class="lang-option" data-lang="tr">Türkçe</div>
+            <div class="lang-option" data-lang="fr">Français</div>
+            <div class="lang-option" data-lang="de">Deutsch</div>
+            <div class="lang-option" data-lang="lb">Lëtzebuergesch</div>
+            <div class="lang-option" data-lang="zh">中文</div>
+            <div class="lang-option" data-lang="ru">Русский</div>
+            <div class="lang-option" data-lang="ja">日本語</div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will appear here -->
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button class="quick-btn" data-action="services" id="quick-services">Our Services</button>
+            <button class="quick-btn" data-action="pricing" id="quick-pricing">Pricing</button>
+            <button class="quick-btn" data-action="booking" id="quick-booking">How to Book</button>
+            <button class="quick-btn" data-action="freelancing" id="quick-freelancing">Freelancing</button>
+            <button class="quick-btn" data-action="join" id="quick-join">Join as Expert</button>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input-container">
+            <input type="text" id="userInput" placeholder="Type your message...">
+            <button id="sendBtn" class="send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
         </div>
     </div>
 
-    <!-- Language Selector -->
-    <div class="language-menu" id="languageMenu">
-        <div class="lang-option" onclick="changeLanguage('en')">English</div>
-        <div class="lang-option" onclick="changeLanguage('ar')">العربية</div>
-        <div class="lang-option" onclick="changeLanguage('tr')">Türkçe</div>
-        <div class="lang-option" onclick="changeLanguage('fr')">Français</div>
-        <div class="lang-option" onclick="changeLanguage('de')">Deutsch</div>
-        <div class="lang-option" onclick="changeLanguage('lb')">Lëtzebuergesch</div>
-        <div class="lang-option" onclick="changeLanguage('zh')">中文</div>
-        <div class="lang-option" onclick="changeLanguage('ru')">Русский</div>
-        <div class="lang-option" onclick="changeLanguage('ja')">日本語</div>
-    </div>
+    <!-- Chat Toggle Button -->
+    <button class="chat-toggle" id="chatToggle">
+        <div class="toggle-icon">💬</div>
+        <div class="toggle-text">ASW Assistant</div>
+    </button>
 
-    <!-- Chat Messages -->
-    <div class="chat-messages" id="chatMessages">
-        <!-- Messages will appear here -->
-    </div>
+    <script>
+        // Chat Bot Configuration
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentLanguage = 'en';
+            let chatOpen = false;
 
-    <!-- Quick Actions -->
-    <div class="quick-actions">
-        <button class="quick-btn" onclick="sendQuickMessage('services')" id="quick-services">Our Services</button>
-        <button class="quick-btn" onclick="sendQuickMessage('pricing')" id="quick-pricing">Pricing</button>
-        <button class="quick-btn" onclick="sendQuickMessage('booking')" id="quick-booking">How to Book</button>
-        <button class="quick-btn" onclick="sendQuickMessage('join')" id="quick-join">Join as Expert</button>
-    </div>
+            // Get DOM elements
+            const chatBot = document.getElementById('asw-chatbot');
+            const chatToggle = document.getElementById('chatToggle');
+            const minimizeBtn = document.getElementById('minimizeBtn');
+            const closeBtn = document.getElementById('closeBtn');
+            const langBtn = document.getElementById('langBtn');
+            const languageMenu = document.getElementById('languageMenu');
+            const sendBtn = document.getElementById('sendBtn');
+            const userInput = document.getElementById('userInput');
+            const chatMessages = document.getElementById('chatMessages');
 
-    <!-- Chat Input -->
-    <div class="chat-input-container">
-        <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
-        <button onclick="sendMessage()" class="send-btn">
-            <i class="fas fa-paper-plane"></i>
-        </button>
-    </div>
-</div>
-
-<!-- Chat Toggle Button -->
-<button class="chat-toggle" onclick="openChat()" id="chatToggle">
-    <div class="toggle-icon">💬</div>
-    <div class="toggle-text">ASW Assistant</div>
-</button>
-
-<style>
-/* Chat Bot Styles */
-#asw-chatbot {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 380px;
-    height: 600px;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
-    display: none;
-    flex-direction: column;
-    z-index: 10000;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow: hidden;
-}
-
-.chat-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    padding: 12px 20px;
-    cursor: pointer;
-    z-index: 9999;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-.chat-toggle:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
-}
-
-.toggle-icon {
-    font-size: 18px;
-}
-
-.chat-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.chat-avatar {
-    width: 40px;
-    height: 40px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.chat-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-title {
-    font-weight: 600;
-    font-size: 16px;
-}
-
-.chat-status {
-    font-size: 12px;
-    opacity: 0.8;
-}
-
-.header-right {
-    display: flex;
-    gap: 8px;
-}
-
-.lang-btn, .minimize-btn, .close-btn {
-    background: rgba(255,255,255,0.2);
-    border: none;
-    color: white;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    transition: background 0.3s ease;
-}
-
-.lang-btn:hover, .minimize-btn:hover, .close-btn:hover {
-    background: rgba(255,255,255,0.3);
-}
-
-.language-menu {
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    padding: 10px;
-    display: none;
-    flex-direction: column;
-    z-index: 10001;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.lang-option {
-    padding: 12px 15px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background 0.3s ease;
-    font-size: 14px;
-}
-
-.lang-option:hover {
-    background: #f8f9fa;
-}
-
-.chat-messages {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    background: #f8f9fa;
-}
-
-.message {
-    margin-bottom: 15px;
-    display: flex;
-}
-
-.bot-message {
-    justify-content: flex-start;
-}
-
-.user-message {
-    justify-content: flex-end;
-}
-
-.message-content {
-    max-width: 80%;
-    padding: 12px 16px;
-    border-radius: 18px;
-    font-size: 14px;
-    line-height: 1.4;
-}
-
-.bot-message .message-content {
-    background: white;
-    border: 1px solid #e1e5e9;
-    border-radius: 18px 18px 18px 4px;
-}
-
-.user-message .message-content {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 18px 18px 4px 18px;
-}
-
-.quick-actions {
-    padding: 15px 20px;
-    border-top: 1px solid #e1e5e9;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    background: white;
-}
-
-.quick-btn {
-    padding: 8px 16px;
-    background: #f8f9fa;
-    border: 1px solid #e1e5e9;
-    border-radius: 20px;
-    color: #495057;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.quick-btn:hover {
-    background: #667eea;
-    color: white;
-    border-color: #667eea;
-}
-
-.chat-input-container {
-    padding: 20px;
-    border-top: 1px solid #e1e5e9;
-    display: flex;
-    gap: 12px;
-    background: white;
-}
-
-.chat-input-container input {
-    flex: 1;
-    padding: 12px 16px;
-    border: 1px solid #e1e5e9;
-    border-radius: 25px;
-    outline: none;
-    font-size: 14px;
-}
-
-.chat-input-container input:focus {
-    border-color: #667eea;
-}
-
-.send-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.send-btn:hover {
-    transform: scale(1.05);
-}
-
-/* RTL Support for Arabic */
-[dir="rtl"] .bot-message .message-content {
-    border-radius: 18px 18px 4px 18px;
-}
-
-[dir="rtl"] .user-message .message-content {
-    border-radius: 18px 4px 18px 18px;
-}
-</style>
-
-<script>
-// Chat Bot Configuration
-let currentLanguage = 'en';
-let chatOpen = false;
-
-// Language Detection and Responses
+            // Language Detection and Responses
+            // Language Detection and Responses
 const chatResponses = {
     'en': {
-        welcome: "Hi! I'm ASW Assistant 🌍 How can I help you today?",
-        services: `🏠 **Home Services:** Plumbing, Electrical, Handyman, Decor\n⚕️ **Healthcare:** Physiotherapy, Massage Therapy\n💼 **Professional:** AI Services, Bot Training, Photography, Modeling\n🚚 **Transportation:** Trucking (USA), Moving (Worldwide), Licensed Drivers\n✨ **And much more!** Need something specific? Contact us!`,
-        pricing: "💰 **Pricing varies by:**\n• Service type & complexity\n• Your location & area\n• Expert's experience\n• Service duration\n\nFor exact pricing, please contact us with your specific requirements!",
-        booking: "📅 **How to Book:**\n1. Message us on Instagram/Facebook\n2. Email us with your needs\n3. We'll match you with the perfect expert\n4. Discuss details & confirm booking\n\nWe customize every service to your exact needs!",
-        join: "👥 **Join ASW as Expert:**\nWe'd love to have you! Please:\n1. Email us your expertise/details\n2. Include: Qualifications, Experience\n3. Areas you can serve\n4. Available days\n5. We'll reply ASAP!\n\nJoin our network of quality professionals!",
-        contact: "📞 **Contact Info:**\nPlease scroll down to see our email and social media links at the bottom of the page!",
-        fallback: "I'm still learning! For detailed questions about pricing or specific services, please contact us directly via email or social media. We're here to help! 🚀",
+        welcome: "Hello! I'm ASW Assistant. How can I help you today?",
+        services: `
+            <strong>Home & Property Services:</strong><br>
+            • Plumbing, Electrical, Handyman, Decor, Roofing, Carpentry, etc.<br><br>
+            
+            <strong>Healthcare & Wellness:</strong><br>
+            • Physiotherapy, Massage Therapy, Personal Training, Nutrition Counseling<br><br>
+            
+            <strong>Transportation & Logistics:</strong><br>
+            • Trucking (USA), Moving Services (Worldwide), Licensed Drivers<br><br>
+            
+            <strong>Entertainment & Events:</strong><br>
+            • Photography, Modeling, Musicians, Dancers, Event Planning<br><br>
+            
+            <strong>Freelance & Professional Services:</strong><br>
+            • AI Services, Bot Training, Chatbot Design, AI Data Annotation<br>
+            • Cybersecurity, Digital Marketing, NFT/Crypto Development<br>
+            • AutoCAD Designs, Civil Engineering, Web Development<br><br>
+            
+            <em>Need something specific? Contact us!</em>
+        `,
+        pricing: `
+            <strong>Pricing varies by:</strong><br>
+            • Service type & complexity<br>
+            • Your location & area<br>
+            • Expert's experience<br>
+            • Service duration<br><br>
+            
+            For exact pricing, please contact us with your specific requirements!
+        `,
+        booking: `
+            <strong>How to Book:</strong><br>
+            1. Contact us through your preferred method:<br>
+            &nbsp;&nbsp;• Social media (Instagram/Facebook) OR<br>
+            &nbsp;&nbsp;• Email us directly<br>
+            2. Tell us your needs<br>
+            3. We'll match you with the perfect expert<br>
+            4. Discuss details & confirm booking<br><br>
+            
+            We customize every service to your exact needs!
+        `,
+        freelancing: `
+            <strong>Freelancing Services:</strong><br><br>
+            
+            <strong>AI & Tech Services:</strong><br>
+            • Chatbot Design & Development<br>
+            • AI Data Annotation & Training<br>
+            • Cybersecurity Solutions<br>
+            • Digital Marketing & SEO<br>
+            • NFT/Crypto Development<br><br>
+            
+            <strong>Engineering & Design:</strong><br>
+            • AutoCAD & Architectural Designs<br>
+            • Civil Engineering Plans<br>
+            • 3D Modeling & Rendering<br>
+            • Structural Analysis<br><br>
+            
+            <strong>Payment Options:</strong><br>
+            We are completely flexible and work according to your convenience:<br>
+            • 100% upfront (if you prefer)<br>
+            • 50% advance + 50% on completion<br>
+            • Milestone-based payments<br>
+            • Use any trusted platform of your choice<br><br>
+            
+            <strong>Quality Guarantee:</strong><br>
+            • Speed and quality guaranteed<br>
+            • Money-back if not satisfied<br>
+            • Unlimited revisions until perfect<br>
+            • Professional certified experts<br><br>
+            
+            Ready to start? Contact us with your project details!
+        `,
+        join: `
+            <strong>Join ASW as Expert:</strong><br>
+            We'd love to have you! Please:<br>
+            1. Email us your expertise and details<br>
+            2. Include: Qualifications, Experience<br>
+            3. Areas you can serve<br>
+            4. Available days<br>
+            5. We'll reply as soon as possible!<br><br>
+            
+            Join our network of quality professionals!
+        `,
+        contact: "Contact Information:\nPlease scroll down to see our email and social media links at the bottom of the page!",
+        fallback: "I'm still learning! For detailed questions about pricing or specific services, please contact us directly via email or social media. We're here to help!",
         quickServices: "Our Services",
         quickPricing: "Pricing",
-        quickBooking: "How to Book", 
+        quickBooking: "How to Book",
+        quickFreelancing: "Freelancing",
         quickJoin: "Join as Expert"
     },
-    'fr': {
-        welcome: "Bonjour ! Je suis l'Assistant ASW 🌍 Comment puis-je vous aider aujourd'hui ?",
-        services: `🏠 **Services à domicile:** Plomberie, Électricité, Bricolage, Décoration\n⚕️ **Santé:** Physiothérapie, Massothérapie\n💼 **Professionnel:** Services IA, Formation de bots, Photographie, Modélisation\n🚚 **Transport:** Camionnage (USA), Déménagement (Mondial), Chauffeurs qualifiés\n✨ **Et bien plus !** Vous avez besoin de quelque chose de spécifique ? Contactez-nous !`,
-        pricing: "💰 **Les prix varient selon:**\n• Type et complexité du service\n• Votre localisation et zone\n• Expérience de l'expert\n• Durée du service\n\nPour un prix exact, contactez-nous avec vos besoins spécifiques !",
-        booking: "📅 **Comment réserver:**\n1. Messagez-nous sur Instagram/Facebook\n2. Envoyez-nous un email avec vos besoins\n3. Nous vous mettrons en relation avec l'expert parfait\n4. Discutez des détails et confirmez la réservation\n\nNous personnalisons chaque service à vos besoins exacts !",
-        join: "👥 **Rejoignez ASW en tant qu'Expert:**\nNous serions ravis de vous accueillir ! Veuillez :\n1. Nous envoyer un email avec votre expertise/détails\n2. Inclure : Qualifications, Expérience\n3. Zones que vous pouvez desservir\n4. Jours disponibles\n5. Nous répondrons ASAP !\n\nRejoignez notre réseau de professionnels de qualité !",
-        contact: "📞 **Coordonnées:**\nVeuillez faire défiler vers le bas pour voir notre email et nos liens de médias sociaux en bas de page !",
-        fallback: "J'apprends encore ! Pour des questions détaillées sur les prix ou des services spécifiques, veuillez nous contacter directement par email ou via les médias sociaux. Nous sommes là pour vous aider ! 🚀",
-        quickServices: "Nos Services",
-        quickPricing: "Tarifs", 
-        quickBooking: "Comment Réserver",
-        quickJoin: "Rejoindre en tant qu'Expert"
-    },
     'ar': {
-        welcome: "مرحباً! أنا مساعد ASW 🌍 كيف يمكنني مساعدتك اليوم؟",
-        services: `🏠 **خدمات المنزل:** سباكة، كهرباء، تصليحات، ديكور\n⚕️ **الرعاية الصحية:** علاج طبيعي، مساج\n💼 **خدمات احترافية:** خدمات الذكاء الاصطناعي، تدريب البوتات، تصوير، عروض أزياء\n🚚 **النقل:** شحن (أمريكا)، نقل (عالمي)، سائقين مرخصين\n✨ **والمزيد!** هل تحتاج شيئاً محدداً؟ اتصل بنا!`,
-        pricing: "💰 **الأسعار تختلف حسب:**\n• نوع الخدمة وتعقيدها\n• موقعك ومنطقتك\n• خبرة الخبير\n• مدة الخدمة\n\nللحصول على سعر دقيق، يرجى الاتصال بنا بمتطلباتك المحددة!",
-        booking: "📅 **كيفية الحجز:**\n1. راسلنا على الإنستغرام/فيسبوك\n2. أرسل لنا بريداً إلكترونياً باحتياجاتك\n3. سنجد لك الخبير المناسب\n4. ناقش التفاصيل وأكد الحجز\n\nنحن نخصص كل خدمة وفقاً لاحتياجاتك الدقيقة!",
-        join: "👥 **انضم إلى ASW كخبير:**\nنود انضمامك! يرجى:\n1. إرسال بريد إلكتروني يوضح تخصصك/تفاصيلك\n2. تضمين: المؤهلات، الخبرة\n3. المناطق التي يمكنك خدمتها\n4. الأيام المتاحة\n5. سنجيب في أقرب وقت ممكن!\n\nانضم إلى شبكتنا من المحترفين ذوي الجودة!",
-        contact: "📞 **معلومات الاتصال:**\nيرجى التمرير لأسفل لرؤية بريدنا الإلكتروني وروابط وسائل التواصل الاجتماعي في أسفل الصفحة!",
-        fallback: "ما زلت أتعلم! للأسئلة التفصيلية حول الأسعار أو الخدمات المحددة، يرجى الاتصال بنا مباشرة عبر البريد الإلكتروني أو وسائل التواصل الاجتماعي. نحن هنا للمساعدة! 🚀",
+        welcome: "مرحبًا! أنا مساعد ASW. كيف يمكنني مساعدتك اليوم؟",
+        services: "خدمات المنزل: السباكة، الكهرباء، النجار، الديكور، إلخ...",
+        pricing: "تختلف الأسعار حسب نوع الخدمة والتعقيد والموقع.",
+        booking: "كيفية الحجز: اتصل بنا عبر وسائل التواصل الاجتماعي أو البريد الإلكتروني.",
+        freelancing: "خدمات العمل الحر: تصميم الروبوتات، الذكاء الاصطناعي، التسويق الرقمي.",
+        join: "انضم إلى ASW كخبير: أرسل لنا بريدًا إلكترونيًا بتفاصيل خبرتك.",
+        contact: "معلومات الاتصال: يرجى التمرير لأسفل لرؤية بريدنا الإلكتروني وروابط وسائل التواصل الاجتماعي في أسفل الصفحة!",
+        fallback: "ما زلت أتعلم! للأسئلة التفصيلية حول الأسعار أو الخدمات المحددة، يرجى الاتصال بنا مباشرة عبر البريد الإلكتروني أو وسائل التواصل الاجتماعي. نحن هنا لمساعدتك!",
         quickServices: "خدماتنا",
         quickPricing: "الأسعار",
         quickBooking: "كيفية الحجز",
+        quickFreelancing: "العمل الحر",
         quickJoin: "انضم كخبير"
     },
     'tr': {
-        welcome: "Merhaba! Ben ASW Asistanı 🌍 Bugün size nasıl yardımcı olabilirim?",
-        services: `🏠 **Ev Hizmetleri:** Tesisat, Elektrik, Tamirci, Dekorasyon\n⚕️ **Sağlık Hizmetleri:** Fizyoterapi, Masaj Terapisi\n💼 **Profesyonel:** AI Hizmetleri, Bot Eğitimi, Fotoğrafçılık, Model\n🚚 **Ulaşım:** Kamyonculuk (ABD), Taşınma (Dünya Çapında), Lisanslı Sürücüler\n✨ **Ve çok daha fazlası!** Özel bir şeye mi ihtiyacınız var? Bize ulaşın!`,
-        pricing: "💰 **Fiyatlar şunlara göre değişir:**\n• Hizmet türü ve karmaşıklığı\n• Konumunuz ve bölge\n• Uzmanın deneyimi\n• Hizmet süresi\n\nKesin fiyat için lütfen özel gereksinimlerinizle bize ulaşın!",
-        booking: "📅 **Nasıl Rezervasyon Yapılır:**\n1. Instagram/Facebook'tan bize mesaj atın\n2. İhtiyaçlarınızı e-postayla gönderin\n3. Sizi mükemmel uzmanla eşleştireceğiz\n4. Detayları görüşün ve rezervasyonu onaylayın\n\nHer hizmeti tam ihtiyaçlarınıza göre özelleştiriyoruz!",
-        join: "👥 **Uzman Olarak ASW'ye Katılın:**\nSizi aramızda görmek isteriz! Lütfen:\n1. Uzmanlığınızı/detaylarınızı e-postayla gönderin\n2. Şunları ekleyin: Nitelikler, Deneyim\n3. Hizmet verebileceğiniz bölgeler\n4. Müsgun günler\n5. En kısa sürede cevap vereceğiz!\n\nKaliteli profesyoneller ağımıza katılın!",
-        contact: "📞 **İletişim Bilgileri:**\nE-postamızı ve sosyal medya bağlantılarımızı görmek için lütfen sayfanın altına kaydırın!",
-        fallback: "Hala öğreniyorum! Fiyatlar veya spesifik hizmetler hakkında detaylı sorular için lütfen doğrudan e-posta veya sosyal medya yoluyla bize ulaşın. Yardım etmek için buradayız! 🚀",
+        welcome: "Merhaba! Ben ASW Asistanı. Bugün size nasıl yardımcı olabilirim?",
+        services: "Ev Hizmetleri: Tesisat, Elektrik, Tamirci, Dekorasyon vb...",
+        pricing: "Fiyatlar hizmet türüne, karmaşıklığına ve konumunuza göre değişir.",
+        booking: "Nasıl Rezervasyon Yapılır: Sosyal medya veya e-posta yoluyla bize ulaşın.",
+        freelancing: "Serbest Çalışma Hizmetleri: Chatbot tasarımı, AI, dijital pazarlama.",
+        join: "ASW'ye Uzman Olarak Katılın: Bize uzmanlık detaylarınızı e-posta ile gönderin.",
+        contact: "İletişim Bilgileri: E-postamızı ve sosyal medya bağlantılarımızı sayfanın altında görmek için lütfen aşağı kaydırın!",
+        fallback: "Hala öğreniyorum! Fiyatlandırma veya belirli hizmetlerle ilgili detaylı sorular için lütfen doğrudan e-posta veya sosyal medya yoluyla bizimle iletişime geçin. Yardım etmek için buradayız!",
         quickServices: "Hizmetlerimiz",
-        quickPricing: "Fiyatlar",
-        quickBooking: "Nasıl Rezervasyon Yapılır",
+        quickPricing: "Fiyatlandırma",
+        quickBooking: "Nasıl Rezerve Edilir",
+        quickFreelancing: "Serbest Çalışma",
         quickJoin: "Uzman Olarak Katıl"
     },
+    'fr': {
+        welcome: "Bonjour ! Je suis l'Assistant ASW. Comment puis-je vous aider aujourd'hui ?",
+        services: `
+            <strong>Services Domestiques et Immobiliers :</strong><br>
+            • Plomberie, Électricité, Bricolage, Décoration, Toiture, Menuiserie, etc.<br><br>
+            
+            <strong>Santé et Bien-être :</strong><br>
+            • Physiothérapie, Massothérapie, Entraînement Personnel, Conseil en Nutrition<br><br>
+            
+            <strong>Transport et Logistique :</strong><br>
+            • Camionnage (USA), Services de Déménagement (Mondial), Chauffeurs Qualifiés<br><br>
+            
+            <strong>Divertissement et Événements :</strong><br>
+            • Photographie, Modélisation, Musiciens, Danseurs, Organisation d'Événements<br><br>
+            
+            <strong>Services Freelance et Professionnels :</strong><br>
+            • Services IA, Formation de Bots, Conception de Chatbots, Annotation de Données IA<br>
+            • Cybersécurité, Marketing Digital, Développement NFT/Crypto<br>
+            • Conceptions AutoCAD, Génie Civil, Développement Web<br><br>
+            
+            <em>Vous avez besoin de quelque chose de spécifique ? Contactez-nous !</em>
+        `,
+        pricing: `
+            <strong>Les prix varient selon :</strong><br>
+            • Type et complexité du service<br>
+            • Votre localisation et zone<br>
+            • Expérience de l'expert<br>
+            • Durée du service<br><br>
+            
+            Pour un prix exact, contactez-nous avec vos besoins spécifiques !
+        `,
+        booking: `
+            <strong>Comment réserver :</strong><br>
+            1. Contactez-nous par votre méthode préférée :<br>
+            &nbsp;&nbsp;• Réseaux sociaux (Instagram/Facebook) OU<br>
+            &nbsp;&nbsp;• Email direct<br>
+            2. Dites-nous vos besoins<br>
+            3. Nous vous mettrons en relation avec l'expert parfait<br>
+            4. Discutez des détails et confirmez la réservation<br><br>
+            
+            Nous personnalisons chaque service à vos besoins exacts !
+        `,
+        freelancing: `
+            <strong>Services Freelance :</strong><br><br>
+            
+            <strong>Services IA & Tech :</strong><br>
+            • Conception & Développement de Chatbots<br>
+            • Annotation de Données IA & Formation<br>
+            • Solutions Cybersécurité<br>
+            • Marketing Digital & SEO<br>
+            • Développement NFT/Crypto<br><br>
+            
+            <strong>Ingénierie & Design :</strong><br>
+            • Conceptions AutoCAD & Architecture<br>
+            • Plans de Génie Civil<br>
+            • Modélisation 3D & Rendu<br>
+            • Analyse Structurelle<br><br>
+            
+            <strong>Options de Paiement :</strong><br>
+            Nous sommes complètement flexibles et travaillons selon votre convenance :<br>
+            • 100% d'avance (si vous préférez)<br>
+            • 50% d'avance + 50% à la fin<br>
+            • Paiements par étapes<br>
+            • Utilisez toute plateforme de votre choix<br><br>
+            
+            <strong>Garantie Qualité :</strong><br>
+            • Vitesse et qualité garanties<br>
+            • Remboursement si non satisfait<br>
+            • Révisions illimitées jusqu'à perfection<br>
+            • Experts professionnels certifiés<br><br>
+            
+            Prêt à commencer? Contactez-nous avec les détails de votre projet!
+        `,
+        join: `
+            <strong>Rejoignez ASW en tant qu'Expert :</strong><br>
+            Nous serions ravis de vous accueillir ! Veuillez :<br>
+            1. Nous envoyer un email avec votre expertise et détails<br>
+            2. Inclure : Qualifications, Expérience<br>
+            3. Zones que vous pouvez desservir<br>
+            4. Jours disponibles<br>
+            5. Nous répondrons dès que possible !<br><br>
+            
+            Rejoignez notre réseau de professionnels de qualité !
+        `,
+        contact: "Coordonnées :\nVeuillez faire défiler vers le bas pour voir notre email et nos liens de médias sociaux en bas de page !",
+        fallback: "J'apprends encore ! Pour des questions détaillées sur les prix ou des services spécifiques, veuillez nous contacter directement par email ou via les médias sociaux. Nous sommes là pour vous aider !",
+        quickServices: "Nos Services",
+        quickPricing: "Tarifs", 
+        quickBooking: "Comment Réserver",
+        quickFreelancing: "Freelance",
+        quickJoin: "Rejoindre en tant qu'Expert"
+    },
     'de': {
-        welcome: "Hallo! Ich bin der ASW-Assistent 🌍 Wie kann ich Ihnen heute helfen?",
-        services: `🏠 **Hausdienste:** Sanitär, Elektrik, Handwerker, Dekoration\n⚕️ **Gesundheitswesen:** Physiotherapie, Massagetherapie\n💼 **Professionell:** KI-Dienste, Bot-Training, Fotografie, Modell\n🚚 **Transport:** LKW-Transport (USA), Umzug (Weltweit), Lizenzierte Fahrer\n✨ **Und vieles mehr!** Benötigen Sie etwas Bestimmtes? Kontaktieren Sie uns!`,
-        pricing: "💰 **Preise variieren nach:**\n• Dienstleistungstyp & Komplexität\n• Ihrem Standort & Gebiet\n• Erfahrung des Experten\n• Dienstleistungsdauer\n\nFür genaue Preise kontaktieren Sie uns bitte mit Ihren spezifischen Anforderungen!",
-        booking: "📅 **So buchen Sie:**\n1. Schreiben Sie uns auf Instagram/Facebook\n2. Senden Sie uns eine E-Mail mit Ihren Bedürfnissen\n3. Wir vermitteln Ihnen den perfekten Experten\n4. Besprechen Sie Details & bestätigen Sie die Buchung\n\nWir passen jeden Dienst genau an Ihre Bedürfnisse an!",
-        join: "👥 **Als Experte zu ASW kommen:**\nWir würden uns freuen, Sie dabei zu haben! Bitte:\n1. Senden Sie uns Ihre Expertise/Details per E-Mail\n2. Einschließen: Qualifikationen, Erfahrung\n3. Gebiete, die Sie bedienen können\n4. Verfügbare Tage\n5. Wir antworten ASAP!\n\nSchließen Sie sich unserem Netzwerk qualitativ hochwertiger Profis an!",
-        contact: "📞 **Kontaktinformationen:**\nBitte scrollen Sie nach unten, um unsere E-Mail und Social-Media-Links unten auf der Seite zu sehen!",
-        fallback: "Ich lerne noch! Für detaillierte Fragen zu Preisen oder bestimmten Dienstleistungen kontaktieren Sie uns bitte direkt per E-Mail oder über soziale Medien. Wir sind hier, um zu helfen! 🚀",
+        welcome: "Hallo! Ich bin der ASW-Assistent. Wie kann ich Ihnen heute helfen?",
+        services: "Hausdienste: Klempnerarbeit, Elektriker, Handwerker, Dekoration usw...",
+        pricing: "Die Preise variieren je nach Art der Dienstleistung, Komplexität und Standort.",
+        booking: "So buchen Sie: Kontaktieren Sie uns über soziale Medien oder E-Mail.",
+        freelancing: "Freiberufliche Dienstleistungen: Chatbot-Design, KI, digitales Marketing.",
+        join: "Schließen Sie sich ASW als Experte an: Senden Sie uns Ihre Experten-Details per E-Mail.",
+        contact: "Kontaktinformationen: Bitte scrollen Sie nach unten, um unsere E-Mail und Social-Media-Links am Ende der Seite zu sehen!",
+        fallback: "Ich lerne noch! Für detaillierte Fragen zu Preisen oder bestimmten Dienstleistungen kontaktieren Sie uns bitte direkt per E-Mail oder über soziale Medien. Wir sind hier, um zu helfen!",
         quickServices: "Unsere Dienstleistungen",
         quickPricing: "Preise",
         quickBooking: "So buchen Sie",
+        quickFreelancing: "Freiberuflich",
         quickJoin: "Als Experte beitreten"
     },
+    'lb': {
+        welcome: "Moien! Ech sinn den ASW Assistent. Wéi kann ech Iech haut hëllefen?",
+        services: "Heem Service: Klempner, Elektriker, Handyman, Dekoratioun, etc...",
+        pricing: "Präisser variéieren no Service Typ, Komplexitéit an Standuert.",
+        booking: "Wéi bucht een: Kontaktéiert eis iwwer sozial Medien oder E-Mail.",
+        freelancing: "Freelance Servicer: Chatbot Design, AI, digital Marketing.",
+        join: "Schléisst Iech un ASW als Expert: Schéckt eis Är Expert Detailer per E-Mail.",
+        contact: "Kontakt Informatioun: Scrollt w.e.g. no ënnen fir eis E-Mail a Social Media Linken um Enn vun der Säit ze gesinn!",
+        fallback: "Ech léieren nach ëmmer! Fir detailléiert Froen iwwer Präisser oder spezifesch Servicer, kontaktéiert eis w.e.g. direkt per E-Mail oder iwwer sozial Medien. Mir sinn hei fir ze hëllefen!",
+        quickServices: "Eis Servicer",
+        quickPricing: "Präisser",
+        quickBooking: "Wéi buchen",
+        quickFreelancing: "Freelance",
+        quickJoin: "Als Expert bäidréien"
+    },
     'zh': {
-        welcome: "你好！我是 ASW 助手 🌍 今天能为您提供什么帮助？",
-        services: `🏠 **家庭服务:** 管道工, 电工, 杂工, 装饰\n⚕️ **医疗服务:** 物理治疗, 按摩治疗\n💼 **专业服务:** AI服务, 机器人培训, 摄影, 模特\n🚚 **运输服务:** 卡车运输 (美国), 搬家服务 (全球), 持证司机\n✨ **还有更多!** 需要特定服务？联系我们！`,
-        pricing: "💰 **价格根据以下因素变化:**\n• 服务类型和复杂性\n• 您的位置和区域\n• 专家的经验\n• 服务时长\n\n如需确切价格，请联系我们并提供您的具体需求！",
-        booking: "📅 **如何预订:**\n1. 通过 Instagram/Facebook 给我们发消息\n2. 发送电子邮件说明您的需求\n3. 我们将为您匹配最合适的专家\n4. 讨论细节并确认预订\n\n我们根据您的确切需求定制每项服务！",
-        join: "👥 **作为专家加入 ASW:**\n我们欢迎您的加入！请：\n1. 发送电子邮件告知您的专业/详细信息\n2. 包括：资格, 经验\n3. 您可以服务的区域\n4. 可用日期\n5. 我们将尽快回复！\n\n加入我们的优质专业人士网络！",
-        contact: "📞 **联系信息:**\n请向下滚动以查看页面底部的我们的电子邮件和社交媒体链接！",
-        fallback: "我还在学习中！有关价格或特定服务的详细问题，请直接通过电子邮件或社交媒体联系我们。我们随时为您提供帮助！🚀",
+        welcome: "你好！我是 ASW 助手。今天我能为您提供什么帮助？",
+        services: "家庭服务：管道工、电工、杂工、装饰等...",
+        pricing: "价格根据服务类型、复杂性和位置而异。",
+        booking: "如何预订：通过社交媒体或电子邮件联系我们。",
+        freelancing: "自由职业服务：聊天机器人设计、人工智能、数字营销。",
+        join: "作为专家加入 ASW：通过电子邮件向我们发送您的专家详细信息。",
+        contact: "联系信息：请向下滚动以在页面底部查看我们的电子邮件和社交媒体链接！",
+        fallback: "我还在学习！有关定价或特定服务的详细问题，请直接通过电子邮件或社交媒体联系我们。我们在这里提供帮助！",
         quickServices: "我们的服务",
-        quickPricing: "价格",
-        quickBooking: "如何预订", 
+        quickPricing: "定价",
+        quickBooking: "如何预订",
+        quickFreelancing: "自由职业",
         quickJoin: "作为专家加入"
     },
     'ru': {
-        welcome: "Здравствуйте! Я помощник ASW 🌍 Как я могу помочь вам сегодня?",
-        services: `🏠 **Домашние услуги:** Сантехника, Электрика, Ремонт, Декор\n⚕️ **Здравоохранение:** Физиотерапия, Массаж\n💼 **Профессиональные:** AI-услуги, Обучение ботов, Фотография, Модели\n🚚 **Транспорт:** Грузоперевозки (США), Переезды (по всему миру), Лицензированные водители\n✨ **И многое другое!** Нужно что-то конкретное? Свяжитесь с нами!`,
-        pricing: "💰 **Цены зависят от:**\n• Типа и сложности услуги\n• Вашего местоположения и района\n• Опыта эксперта\n• Продолжительности услуги\n\nДля точной цены, пожалуйста, свяжитесь с нами с вашими конкретными требованиями!",
-        booking: "📅 **Как забронировать:**\n1. Напишите нам в Instagram/Facebook\n2. Отправьте нам email с вашими потребностями\n3. Мы подберем вам идеального эксперта\n4. Обсудите детали и подтвердите бронирование\n\nМы настраиваем каждую услугу под ваши точные потребности!",
-        join: "👥 **Присоединиться к ASW как эксперт:**\nМы будем рады вас видеть! Пожалуйста:\n1. Отправьте нам email с вашей экспертизой/детали\n2. Включите: Квалификации, Опыт\n3. Районы, которые вы можете обслуживать\n4. Доступные дни\n5. Мы ответим как можно скорее!\n\nПрисоединяйтесь к нашей сети качественных профессионалов!",
-        contact: "📞 **Контактная информация:**\nПожалуйста, прокрутите вниз, чтобы увидеть нашу электронную почту и ссылки на социальные сети внизу страницы!",
-        fallback: "Я все еще учусь! Для подробных вопросов о ценах или конкретных услугах, пожалуйста, свяжитесь с нами напрямую по электронной почте или через социальные сети. Мы здесь, чтобы помочь! 🚀",
+        welcome: "Здравствуйте! Я помощник ASW. Как я могу вам помочь сегодня?",
+        services: "Бытовые услуги: Сантехника, Электрика, Ремонт, Декор и т.д...",
+        pricing: "Цены варьируются в зависимости от типа услуги, сложности и местоположения.",
+        booking: "Как забронировать: Свяжитесь с нами через социальные сети или по электронной почте.",
+        freelancing: "Фриланс-услуги: Дизайн чат-ботов, ИИ, цифровой маркетинг.",
+        join: "Присоединяйтесь к ASW в качестве эксперта: Отправьте нам данные о вашей экспертизе по электронной почте.",
+        contact: "Контактная информация: Пожалуйста, прокрутите вниз, чтобы увидеть нашу электронную почту и ссылки на социальные сети в нижней части страницы!",
+        fallback: "Я все еще учусь! По подробным вопросам о ценах или конкретных услугах, пожалуйста, свяжитесь с нами напрямую по электронной почте или через социальные сети. Мы здесь, чтобы помочь!",
         quickServices: "Наши услуги",
         quickPricing: "Цены",
         quickBooking: "Как забронировать",
+        quickFreelancing: "Фриланс",
         quickJoin: "Присоединиться как эксперт"
     },
     'ja': {
-        welcome: "こんにちは！ASWアシスタントです🌍本日はどのようなご用件でしょうか？",
-        services: `🏠 **家庭サービス:** 配管工, 電気工事, 修理, 装飾\n⚕️ **医療サービス:** 理学療法, マッサージ療法\n💼 **プロフェッショナル:** AIサービス, ボットトレーニング, 写真, モデル\n🚚 **運輸サービス:** トラック輸送 (アメリカ), 引越し (全世界), 免許保有ドライバー\n✨ **その他多数!** 特定のサービスが必要ですか？お問い合わせください！`,
-        pricing: "💰 **価格は以下によって異なります:**\n• サービスの種類と複雑さ\n• お客様の所在地とエリア\n• 専門家の経験\n• サービスの期間\n\n正確な価格については、具体的な要件をお知らせいただき、お問い合わせください！",
-        booking: "📅 **予約方法:**\n1. Instagram/Facebookでメッセージをお送りください\n2. ご要望をメールでお送りください\n3. 最適な専門家をご紹介します\n4. 詳細を話し合い、予約を確定します\n\nお客様の正確なニーズに合わせて各サービスをカスタマイズします！",
-        join: "👥 **専門家としてASWに参加:**\nご参加をお待ちしています！以下の手順で：\n1. 専門知識/詳細をメールでお送りください\n2. 以下を含めてください：資格, 経験\n3. 対応可能なエリア\n4. 利用可能な日付\n5. できるだけ早く返信します！\n\n質の高い専門家のネットワークに参加しましょう！",
-        contact: "📞 **連絡先情報:**\nページ下部にメールアドレスとソーシャルメディアリンクがございますので、スクロールしてください！",
-        fallback: "まだ学習中です！価格や特定のサービスに関する詳細な質問は、メールまたはソーシャルメディアから直接お問い合わせください。喜んでお手伝いします！🚀",
+        welcome: "こんにちは！私はASWアシスタントです。今日はどのようにお手伝いできますか？",
+        services: "家庭サービス：配管工、電気工事、便利屋、装飾など...",
+        pricing: "価格はサービスの種類、複雑さ、場所によって異なります。",
+        booking: "予約方法：ソーシャルメディアまたはメールでお問い合わせください。",
+        freelancing: "フリーランスサービス：チャットボットデザイン、AI、デジタルマーケティング。",
+        join: "エキスパートとしてASWに参加：メールで専門知識の詳細をお送りください。",
+        contact: "連絡先情報：ページ下部にメールアドレスとソーシャルメディアリンクが表示されますので、スクロールしてください！",
+        fallback: "まだ学習中です！価格や特定のサービスに関する詳細な質問は、メールまたはソーシャルメディアで直接お問い合わせください。お手伝いさせていただきます！",
         quickServices: "私たちのサービス",
         quickPricing: "価格",
         quickBooking: "予約方法",
-        quickJoin: "専門家として参加"
-    },
-    'lb': {
-        welcome: "Moien! Ech sinn den ASW Assistent 🌍 Wéi kann ech Iech haut hëllefen?",
-        services: `🏠 **Heem Service:** Klempner, Elektriker, Handyman, Dekoratioun\n⚕️ **Gesondheets Service:** Physiotherapie, Massage Therapie\n💼 **Professionell:** AI Service, Bot Training, Fotografie, Modell\n🚚 **Transport:** Camionnage (USA), Plënnere (Weltwäit), Lizenzéiert Chauffeuren\n✨ **A vill méi!** Braucht eppes Spezifescht? Kontaktéiert eis!`,
-        pricing: "💰 **Präisser variéieren no:**\n• Service Typ & Komplexitéit\n• Ärer Lokatioun & Gebitt\n• Erfahrung vum Expert\n• Service Dauer\n\nFir exakt Präisser, kontaktéiert eis w.e.g. mat Äre spezifeschen Ufuerderungen!",
-        booking: "📅 **Wéi ze buchen:**\n1. Schéckt eis e Message op Instagram/Facebook\n2. Schéckt eis E-Mail mat Äre Bedierfnesser\n3. Mir finden de perfekte Expert fir Iech\n4. Diskutéiert Detailer & bestätegt d'Reservatioun\n\nMir passen all Service un Är genee Bedierfnesser un!",
-        join: "👥 **Matmaachen als Expert bei ASW:**\nMir wieren frou Iech ze hunn! W.e.g.:\n1. Schéckt eis Är Expertis/Detailer per E-Mail\n2. Inklusiv: Qualifikatiounen, Erfahrung\n3. Gebidder wou Dir kënnt offeréieren\n4. Disponibel Deeg\n5. Mir äntweren ASAP!\n\nMaacht mat an eisem Netzwerk vu qualitativen Profien!",
-        contact: "📞 **Kontakt Informatioun:**\nScrollt w.e.g. no ënnen fir eis E-Mail a Social Media Linken ënnen op der Säit ze gesinn!",
-        fallback: "Ech léieren nach ëmmer! Fir detailléiert Froen iwwer Präisser oder spezifesch Service, kontaktéiert eis w.e.g. direkt per E-Mail oder iwwer Social Media. Mir sinn hei fir ze hëllefen! 🚀",
-        quickServices: "Eis Service",
-        quickPricing: "Präisser",
-        quickBooking: "Wéi ze buchen",
-        quickJoin: "Als Expert matmaachen"
+        quickFreelancing: "フリーランス",
+        quickJoin: "エキスパートとして参加"
     }
 };
 
-// Language names for display
-const languageNames = {
-    'en': 'English',
-    'ar': 'العربية', 
-    'tr': 'Türkçe',
-    'fr': 'Français',
-    'de': 'Deutsch',
-    'lb': 'Lëtzebuergesch',
-    'zh': '中文',
-    'ru': 'Русский',
-    'ja': '日本語'
-};
+            // Language names for display
+            const languageNames = {
+                'en': 'English',
+                'ar': 'العربية', 
+                'tr': 'Türkçe',
+                'fr': 'Français',
+                'de': 'Deutsch',
+                'lb': 'Lëtzebuergesch',
+                'zh': '中文',
+                'ru': 'Русский',
+                'ja': '日本語'
+            };
 
-// Initialize Chatbot
-function initChatbot() {
-    detectUserLanguage();
-    setTimeout(openChat, 2000); // Open after 2 seconds
-}
+            // Event Listeners
+            chatToggle.addEventListener('click', openChat);
+            minimizeBtn.addEventListener('click', toggleChat);
+            closeBtn.addEventListener('click', closeChat);
+            langBtn.addEventListener('click', toggleLanguageMenu);
+            sendBtn.addEventListener('click', sendMessage);
+            userInput.addEventListener('keypress', handleKeyPress);
 
-// Detect user language
-function detectUserLanguage() {
-    const browserLang = navigator.language || navigator.userLanguage;
-    const mainLang = browserLang.split('-')[0];
-    
-    // Check if we support this language
-    if (chatResponses[mainLang]) {
-        changeLanguage(mainLang);
-    } else {
-        changeLanguage('en'); // Default to English
-    }
-}
+            // Quick action buttons
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    sendQuickMessage(action);
+                });
+            });
 
-// Change language
-function changeLanguage(lang) {
-    currentLanguage = lang;
-    document.getElementById('current-language').textContent = languageNames[lang];
-    
-    // Update quick buttons
-    document.getElementById('quick-services').textContent = chatResponses[lang].quickServices;
-    document.getElementById('quick-pricing').textContent = chatResponses[lang].quickPricing;
-    document.getElementById('quick-booking').textContent = chatResponses[lang].quickBooking;
-    document.getElementById('quick-join').textContent = chatResponses[lang].quickJoin;
-    
-    // Update input placeholder
-    document.getElementById('userInput').placeholder = "Type your message...";
-    
-    // Set RTL for Arabic
-    if (lang === 'ar') {
-        document.getElementById('chatMessages').setAttribute('dir', 'rtl');
-    } else {
-        document.getElementById('chatMessages').setAttribute('dir', 'ltr');
-    }
-    
-    hideLanguageMenu();
-}
+            // Language options
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    changeLanguage(lang);
+                });
+            });
 
-// Toggle chat
-function toggleChat() {
-    const chatBot = document.getElementById('asw-chatbot');
-    const chatToggle = document.getElementById('chatToggle');
-    
-    if (chatOpen) {
-        chatBot.style.display = 'none';
-        chatToggle.style.display = 'flex';
-    } else {
-        chatBot.style.display = 'flex';
-        chatToggle.style.display = 'none';
-    }
-    chatOpen = !chatOpen;
-}
+            // Close language menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.language-menu') && !event.target.closest('.lang-btn')) {
+                    languageMenu.classList.remove('active');
+                }
+            });
 
-function openChat() {
-    const chatBot = document.getElementById('asw-chatbot');
-    const chatToggle = document.getElementById('chatToggle');
-    
-    if (!chatOpen) {
-        chatBot.style.display = 'flex';
-        chatToggle.style.display = 'none';
-        chatOpen = true;
-        
-        // Add welcome message if first time
-        const chatMessages = document.getElementById('chatMessages');
-        if (chatMessages.children.length === 0) {
-            addMessage(chatResponses[currentLanguage].welcome, 'bot');
-        }
-    }
-}
+            // Functions
+            function initChatbot() {
+                detectUserLanguage();
+                setTimeout(openChat, 2000);
+            }
 
-function closeChat() {
-    const chatBot = document.getElementById('asw-chatbot');
-    const chatToggle = document.getElementById('chatToggle');
-    
-    chatBot.style.display = 'none';
-    chatToggle.style.display = 'flex';
-    chatOpen = false;
-}
+            function detectUserLanguage() {
+                const browserLang = navigator.language || navigator.userLanguage;
+                const mainLang = browserLang.split('-')[0];
+                
+                if (chatResponses[mainLang]) {
+                    changeLanguage(mainLang);
+                } else {
+                    changeLanguage('en');
+                }
+            }
 
-// Language menu
-function toggleLanguageMenu() {
-    const menu = document.getElementById('languageMenu');
-    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-}
+            function changeLanguage(lang) {
+                currentLanguage = lang;
+                document.getElementById('current-language').textContent = languageNames[lang];
+                
+                // Update quick buttons
+                document.getElementById('quick-services').textContent = chatResponses[lang].quickServices;
+                document.getElementById('quick-pricing').textContent = chatResponses[lang].quickPricing;
+                document.getElementById('quick-booking').textContent = chatResponses[lang].quickBooking;
+                document.getElementById('quick-freelancing').textContent = chatResponses[lang].quickFreelancing;
+                document.getElementById('quick-join').textContent = chatResponses[lang].quickJoin;
+                
+                document.getElementById('userInput').placeholder = "Type your message...";
+                
+                if (lang === 'ar') {
+                    chatMessages.setAttribute('dir', 'rtl');
+                } else {
+                    chatMessages.setAttribute('dir', 'ltr');
+                }
+                
+                hideLanguageMenu();
+            }
 
-function hideLanguageMenu() {
-    document.getElementById('languageMenu').style.display = 'none';
-}
+            function toggleChat() {
+                if (chatOpen) {
+                    chatBot.classList.remove('active');
+                    chatToggle.style.display = 'flex';
+                } else {
+                    chatBot.classList.add('active');
+                    chatToggle.style.display = 'none';
+                }
+                chatOpen = !chatOpen;
+            }
 
-// Send message
-function sendMessage() {
-    const userInput = document.getElementById('userInput');
-    const message = userInput.value.trim();
-    
-    if (message) {
-        addMessage(message, 'user');
-        userInput.value = '';
-        
-        // Bot response
-        setTimeout(() => {
-            const response = getBotResponse(message);
-            addMessage(response, 'bot');
-        }, 1000);
-    }
-}
+            function openChat() {
+                if (!chatOpen) {
+                    chatBot.classList.add('active');
+                    chatToggle.style.display = 'none';
+                    chatOpen = true;
+                    
+                    if (chatMessages.children.length === 0) {
+                        addMessage(chatResponses[currentLanguage].welcome, 'bot');
+                    }
+                }
+            }
 
-// Quick message
-function sendQuickMessage(type) {
-    const response = chatResponses[currentLanguage][type];
-    addMessage(response, 'bot');
-}
+            function closeChat() {
+                chatBot.classList.remove('active');
+                chatToggle.style.display = 'flex';
+                chatOpen = false;
+            }
 
-// Get bot response
-function getBotResponse(message) {
-    const lowerMessage = message.toLowerCase();
-    
-    // Service related
-    if (lowerMessage.includes('service') || lowerMessage.includes('what do you offer') || lowerMessage.includes('provide')) {
-        return chatResponses[currentLanguage].services;
-    }
-    // Pricing related
-    else if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('how much')) {
-        return chatResponses[currentLanguage].pricing;
-    }
-    // Booking related
-    else if (lowerMessage.includes('book') || lowerMessage.includes('how to') || lowerMessage.includes('reserve')) {
-        return chatResponses[currentLanguage].booking;
-    }
-    // Join related
-    else if (lowerMessage.includes('join') || lowerMessage.includes('work') || lowerMessage.includes('expert') || lowerMessage.includes('partner')) {
-        return chatResponses[currentLanguage].join;
-    }
-    // Contact related
-    else if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('social') || lowerMessage.includes('instagram') || lowerMessage.includes('facebook')) {
-        return chatResponses[currentLanguage].contact;
-    }
-    // Default response
-    else {
-        return chatResponses[currentLanguage].fallback;
-    }
-}
+            function toggleLanguageMenu() {
+                languageMenu.classList.toggle('active');
+            }
 
-// Add message to chat
-function addMessage(text, sender) {
-    const chatMessages = document.getElementById('chatMessages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${sender}-message`;
-    
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'message-content';
-    contentDiv.innerHTML = text.replace(/\n/g, '<br>');
-    
-    messageDiv.appendChild(contentDiv);
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
+            function hideLanguageMenu() {
+                languageMenu.classList.remove('active');
+            }
 
-// Handle Enter key
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
-}
+            function sendMessage() {
+                const message = userInput.value.trim();
+                
+                if (message) {
+                    addMessage(message, 'user');
+                    userInput.value = '';
+                    
+                    setTimeout(() => {
+                        const response = getBotResponse(message);
+                        addMessage(response, 'bot');
+                    }, 1000);
+                }
+            }
 
-// Initialize when page loads
-window.addEventListener('load', initChatbot);
+            function sendQuickMessage(type) {
+                const response = chatResponses[currentLanguage][type];
+                addMessage(response, 'bot');
+            }
 
-// Close language menu when clicking outside
-document.addEventListener('click', function(event) {
-    const langMenu = document.getElementById('languageMenu');
-    const langBtn = document.querySelector('.lang-btn');
-    
-    if (!langMenu.contains(event.target) && !langBtn.contains(event.target)) {
-        hideLanguageMenu();
-    }
-});
-</script>
+            function getBotResponse(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                if (lowerMessage.includes('service') || lowerMessage.includes('what do you offer') || lowerMessage.includes('provide')) {
+                    return chatResponses[currentLanguage].services;
+                }
+                else if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('how much')) {
+                    return chatResponses[currentLanguage].pricing;
+                }
+                else if (lowerMessage.includes('book') || lowerMessage.includes('how to') || lowerMessage.includes('reserve')) {
+                    return chatResponses[currentLanguage].booking;
+                }
+                else if (lowerMessage.includes('freelanc') || lowerMessage.includes('ai service') || lowerMessage.includes('cyber') || lowerMessage.includes('autocad') || lowerMessage.includes('nft') || lowerMessage.includes('crypto')) {
+                    return chatResponses[currentLanguage].freelancing;
+                }
+                else if (lowerMessage.includes('join') || lowerMessage.includes('work') || lowerMessage.includes('expert') || lowerMessage.includes('partner')) {
+                    return chatResponses[currentLanguage].join;
+                }
+                else if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('social') || lowerMessage.includes('instagram') || lowerMessage.includes('facebook')) {
+                    return chatResponses[currentLanguage].contact;
+                }
+                else {
+                    return chatResponses[currentLanguage].fallback;
+                }
+            }
+
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                
+                if (sender === 'bot') {
+                    // For bot messages, allow HTML for formatting
+                    contentDiv.innerHTML = text;
+                } else {
+                    // For user messages, use textContent for security
+                    contentDiv.textContent = text;
+                }
+                
+                messageDiv.appendChild(contentDiv);
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === 'Enter') {
+                    sendMessage();
+                }
+            }
+
+            // Initialize chatbot
+            initChatbot();
+        });
+    </script>
 </body>
-
 </html>
 
 
