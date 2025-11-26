@@ -657,53 +657,64 @@
     </section>
 
     <!-- Contact Section -->
-    <section class="section contact" id="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>Contact Us</h2>
-                <p>Get in touch with our team for any inquiries</p>
+<section class="section contact" id="contact">
+    <div class="container">
+        <div class="section-title">
+            <h2>Contact Us</h2>
+            <p>Get in touch with our team for any inquiries</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <h3>Our Location</h3>
+                        <p>Worldwide</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h3>Email Address</h3>
+                        <p>ihteshamuh17@gmail.com</p>
+                    </div>
+                </div>
+                <!-- ADD PHONE NUMBER SECTION HERE -->
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                        <h3>Phone Number And Whatsapp </h3>
+                        <p>+1 234 567 8900</p>  <!-- Change this to your actual number -->
+                    </div>
+                </div>
             </div>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div>
-                            <h3>Our Location</h3>
-                            <p>Worldwide</p>
-                        </div>
+            
+            <div class="contact-form">
+                <form action="https://formspree.io/f/xgvqvbjw" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-control" placeholder="Your Name" required>
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h3>Email Address</h3>
-                            <p>ihteshamuh17@gmail.com</p>
-                        </div>
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-control" placeholder="Your Email" required>
                     </div>
-                </div>
-                <div class="contact-form">
-                    <form action="https://formspree.io/f/xgvqvbjw" method="POST">
-    <div class="form-group">
-        <input type="text" name="name" class="form-control" placeholder="Your Name" required>
-    </div>
-    <div class="form-group">
-        <input type="email" name="email" class="form-control" placeholder="Your Email" required>
-    </div>
-    <div class="form-group">
-        <input type="text" name="subject" class="form-control" placeholder="Subject">
-    </div>
-    <div class="form-group">
-        <textarea name="message" class="form-control" placeholder="Your Message" rows="6" required></textarea>
-    </div>
-    <button type="submit" class="btn">Send Message</button>
-</form>
-                </div>
+                    <div class="form-group">
+                        <input type="text" name="subject" class="form-control" placeholder="Subject">
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" class="form-control" placeholder="Your Message" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Footer -->
     <footer>
@@ -1645,6 +1656,7 @@ const chatResponses = {
     </script>
 </body>
 </html>
+
 
 
 
