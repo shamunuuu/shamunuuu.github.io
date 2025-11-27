@@ -8,6 +8,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Base Styles & Variables */
+         <!-- Services styles -->
+    /* Service Links Styling - Fixed Colors & Bullets */
+.service-links {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0 0;
+}
+
+.service-links li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 25px;
+}
+
+.service-links li::before {
+    content: "•";
+    color: #1a73e8;  /* Blue color */
+    font-size: 24px;  /* Big dot */
+    position: absolute;
+    left: 0;
+    top: -5px;
+}
+
+.service-links a {
+    color: #1a73e8 !important;  /* Force blue color */
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.service-links a:hover {
+    color: white !important;  /* Force white on hover */
+    background-color: #1a73e8;
+    text-decoration: none;
+    transform: translateX(5px);
+}
+        <!-- Services styles -->
         :root {
             --primary: #1a73e8;
             --primary-dark: #0d47a1;
@@ -534,45 +574,7 @@
         </div>
     </section>
 
-    <!-- Services styles -->
-    /* Service Links Styling - Fixed Colors & Bullets */
-.service-links {
-    list-style: none;
-    padding: 0;
-    margin: 15px 0 0 0;
-}
-
-.service-links li {
-    margin-bottom: 8px;
-    position: relative;
-    padding-left: 25px;
-}
-
-.service-links li::before {
-    content: "•";
-    color: #1a73e8;  /* Blue color */
-    font-size: 24px;  /* Big dot */
-    position: absolute;
-    left: 0;
-    top: -5px;
-}
-
-.service-links a {
-    color: #1a73e8 !important;  /* Force blue color */
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    padding: 3px 8px;
-    border-radius: 4px;
-    display: inline-block;
-}
-
-.service-links a:hover {
-    color: white !important;  /* Force white on hover */
-    background-color: #1a73e8;
-    text-decoration: none;
-    transform: translateX(5px);
-}
+   
     <!-- Services Section -->
   <section class="section services" id="services">
     <div class="container">
@@ -1836,6 +1838,7 @@ const chatResponses = {
     </script>
 </body>
 </html>
+
 
 
 
