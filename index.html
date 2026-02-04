@@ -924,8 +924,72 @@
                     </div>
                     <p>Connecting experts with those who need their skills worldwide. Why stress when we're here to assist?</p>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/share/1DC5T5sBkU/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/aswo.fficial/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <style>
+    /* This ID aligns perfectly with your text above */
+    #asw-footer-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Keeps everything snapped to the left */
+        width: 100%;
+        margin-top: 15px; /* Space between the text and icons */
+    }
+
+    .asw-icon-grid {
+        display: grid;
+        /* Desktop: 5 columns. Mobile: stays in a row or wraps */
+        grid-template-columns: repeat(5, 32px); 
+        gap: 15px; 
+        justify-content: flex-start; /* Aligns grid to the left */
+    }
+
+    .asw-icon-grid a {
+        text-decoration: none !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.3s ease;
+    }
+
+    .asw-icon-grid i {
+        color: #ffffff !important; 
+        font-size: 22px; /* Slightly smaller to look better with text */
+    }
+
+    .asw-icon-grid svg {
+        width: 19px; 
+        height: 19px;
+        fill: #ffffff;
+    }
+
+    .asw-icon-grid a:hover {
+        opacity: 0.6;
+    }
+
+    /* Mobile adjustments: if screen is small, let them wrap naturally */
+    @media (max-width: 600px) {
+        .asw-icon-grid {
+            grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+            width: 100%;
+            max-width: 250px;
+        }
+    }
+</style>
+
+<div id="asw-footer-section">
+    <div class="asw-icon-grid">
+        <a href="https://www.linkedin.com/company/asw-official/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://www.instagram.com/aswo.fficial/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@ASW-official1" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.tiktok.com/@aswofficial1" target="_blank"><i class="fab fa-tiktok"></i></a>
+        <a href="https://x.com/ASWofficia" target="_blank">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+        </a>
+        
+        <a href="https://www.pinterest.com/aswofficial123/" target="_blank"><i class="fab fa-pinterest"></i></a>
+        <a href="https://www.snapchat.com/add/aswofficial1" target="_blank"><i class="fab fa-snapchat-ghost"></i></a>
+        <a href="https://www.facebook.com/people/ASW/100084726525845/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    </div>
+</div>
                     </div>
                 </div>
                 <div class="footer-column">
@@ -1852,6 +1916,7 @@ const chatResponses = {
     </script>
 </body>
 </html>
+
 
 
 
