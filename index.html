@@ -3,54 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI & Smart Workflows | ASW</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>ASW | AI & Smart Workflows</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; font-family: 'Inter', sans-serif; background-color: #F8F9FA; color: #1E293B; }
-        .hero { text-align: center; padding: 120px 20px 150px 20px; background: linear-gradient(135deg, #0B3954 0%, #1E293B 100%); color: white; }
-        .hero h1 { font-size: 3.8rem; margin-bottom: 20px; font-weight: 800; letter-spacing: -1.5px; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background-color: #F8F9FA; color: #1E293B; overflow-x: hidden; }
+        
+        /* Hero Section */
+        .hero { text-align: center; padding: 100px 20px 120px 20px; background: linear-gradient(135deg, #0B3954 0%, #062336 100%); color: white; position: relative; }
+        .hero h1 { font-size: 4rem; margin-bottom: 20px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; }
         .hero h1 span { color: #10B981; }
-        .hero p { font-size: 1.25rem; color: #cbd5e1; max-width: 650px; margin: 0 auto 40px auto; line-height: 1.6; }
-        .features { display: flex; justify-content: center; gap: 30px; max-width: 1200px; margin: -80px auto 80px auto; padding: 0 20px; flex-wrap: wrap; }
-        .card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); flex: 1; min-width: 300px; text-align: left; border-top: 4px solid #10B981; }
-        .card h3 { color: #0B3954; font-size: 1.5rem; margin-top: 0; margin-bottom: 15px; }
-        .card p { color: #475569; line-height: 1.6; margin: 0; }
-        .contact-section { max-width: 600px; margin: 0 auto 80px auto; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .contact-section input, .contact-section textarea { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: 'Inter', sans-serif; box-sizing: border-box; }
-        .submit-btn { background: #10B981; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; cursor: pointer; width: 100%; transition: background 0.3s; }
-        .submit-btn:hover { background: #059669; }
+        .hero p { font-size: 1.25rem; color: #94A3B8; max-width: 650px; margin: 0 auto 40px auto; line-height: 1.6; }
+        .cta-btn { background: #10B981; color: white; border: none; padding: 18px 40px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4); text-decoration: none; display: inline-block; }
+        .cta-btn:hover { background: #059669; transform: translateY(-2px); }
+
+        /* Workflow Visualizer */
+        .visualizer-container { max-width: 900px; margin: -60px auto 80px auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; position: relative; z-index: 10; }
+        .nodes-wrapper { display: flex; justify-content: space-between; align-items: center; position: relative; flex-wrap: wrap; gap: 20px; }
+        .nodes-wrapper::before { content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 3px; background: #e2e8f0; z-index: 0; transform: translateY(-50%); }
+        .node { background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 20px; text-align: center; width: 140px; z-index: 1; position: relative; transition: 0.3s; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .node:hover { border-color: #10B981; transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2); }
+        .node-icon { font-size: 2rem; margin-bottom: 10px; }
+        .node-title { font-weight: 700; color: #0B3954; font-size: 0.9rem; }
+
+        /* ROI Calculator Section */
+        .roi-section { max-width: 1000px; margin: 0 auto 80px auto; display: flex; gap: 40px; padding: 0 20px; flex-wrap: wrap; }
+        .roi-card, .contact-card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); flex: 1; min-width: 300px; border: 1px solid #e2e8f0; }
+        .roi-card h3 { color: #0B3954; font-size: 1.8rem; margin-top: 0; }
+        .slider-group { margin-bottom: 30px; }
+        .slider-group label { font-weight: 600; color: #475569; display: block; margin-bottom: 10px; }
+        input[type="range"] { width: 100%; accent-color: #10B981; }
+        .roi-result { background: #F8F9FA; padding: 20px; border-radius: 12px; text-align: center; border: 2px dashed #10B981; }
+        .roi-result span { display: block; font-size: 2.5rem; font-weight: 800; color: #10B981; }
+        .roi-result p { margin: 5px 0 0 0; color: #475569; font-weight: 500; }
+
+        /* Contact Form */
+        .contact-card h3 { color: #0B3954; font-size: 1.8rem; margin-top: 0; }
+        .contact-card input, .contact-card textarea { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: 'Inter', sans-serif; box-sizing: border-box; background: #F8F9FA; transition: 0.3s; }
+        .contact-card input:focus, .contact-card textarea:focus { outline: none; border-color: #10B981; background: white; }
     </style>
 </head>
 <body>
 
     <script src="header.js"></script>
 
+    <!-- HERO SECTION -->
     <div class="hero">
-        <h1>Automate Your <span>Operations</span></h1>
-        <p>We build custom n8n workflows, deploy AI chatbots, and connect your apps to save your business 20+ hours a week.</p>
+        <h1>Work <span>Smarter</span>, Not Harder</h1>
+        <p>We build n8n workflows, deploy Make.com automations, and create custom AI chatbots so your business runs on autopilot.</p>
+        <a href="#audit" class="cta-btn">Get Your Free Workflow Audit</a>
     </div>
 
-    <div class="features">
-        <div class="card">
-            <h3>⚙️ n8n & Make.com</h3>
-            <p>We connect your scattered apps into a seamless, automated machine. No more manual data entry or dropped leads.</p>
-        </div>
-        <div class="card">
-            <h3>🤖 Custom AI Chatbots</h3>
-            <p>Deploy intelligent support agents trained on your business data to answer questions and capture leads 24/7.</p>
+    <!-- WORKFLOW VISUALIZER -->
+    <div class="visualizer-container">
+        <h2 style="text-align: center; color: #0B3954; margin-top: 0; margin-bottom: 40px;">How We Connect Your Business</h2>
+        <div class="nodes-wrapper">
+            <div class="node">
+                <div class="node-icon">📥</div>
+                <div class="node-title">New Lead (Web Form)</div>
+            </div>
+            <div class="node" style="border-color: #10B981;">
+                <div class="node-icon">🤖</div>
+                <div class="node-title">n8n Router</div>
+            </div>
+            <div class="node">
+                <div class="node-icon">📊</div>
+                <div class="node-title">Update CRM</div>
+            </div>
+            <div class="node">
+                <div class="node-icon">💬</div>
+                <div class="node-title">Slack Alert</div>
+            </div>
         </div>
     </div>
 
-    <div class="contact-section">
-        <h2 style="color: #0B3954; margin-top: 0; text-align: center;">Ready to scale?</h2>
-        <p style="color: #475569; text-align: center; margin-bottom: 30px;">Tell us what you want to automate.</p>
-        <!-- Replace YOUR_FORM_ID with your Formspree ID -->
-        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-            <input type="email" name="email" placeholder="Your Work Email" required>
-            <textarea name="message" placeholder="Describe the workflow or chatbot you need..." required rows="4"></textarea>
-            <button type="submit" class="submit-btn">Get a Free Audit</button>
-        </form>
+    <!-- ROI & CONTACT SECTION -->
+    <div class="roi-section" id="audit">
+        <!-- ROI Calculator -->
+        <div class="roi-card">
+            <h3>Calculate Your ROI</h3>
+            <p style="color: #64748B; margin-bottom: 30px;">See how much money manual tasks are costing you every year.</p>
+            
+            <div class="slider-group">
+                <label>Hours wasted per week: <span id="hoursVal" style="color: #0B3954;">15</span> hrs</label>
+                <input type="range" id="hoursSlider" min="5" max="50" value="15" oninput="updateROI()">
+            </div>
+            
+            <div class="slider-group">
+                <label>Average hourly pay: $<span id="rateVal" style="color: #0B3954;">25</span>/hr</label>
+                <input type="range" id="rateSlider" min="15" max="100" value="25" oninput="updateROI()">
+            </div>
+
+            <div class="roi-result">
+                <p>Potential Yearly Savings</p>
+                <span id="savingsResult">$19,500</span>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-card">
+            <h3>Start Automating</h3>
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Work Email" required>
+                <textarea name="message" placeholder="Describe the manual tasks you want to automate..." required rows="4"></textarea>
+                <button type="submit" class="cta-btn" style="width: 100%;">Send Request</button>
+            </form>
+        </div>
     </div>
+
+    <script>
+        // ROI Calculator Logic
+        function updateROI() {
+            let hours = document.getElementById('hoursSlider').value;
+            let rate = document.getElementById('rateSlider').value;
+            document.getElementById('hoursVal').innerText = hours;
+            document.getElementById('rateVal').innerText = rate;
+            
+            let savings = hours * rate * 52;
+            document.getElementById('savingsResult').innerText = '$' + savings.toLocaleString();
+        }
+    </script>
 
     <script src="footer.js"></script>
     <script src="chatbot.js"></script>
