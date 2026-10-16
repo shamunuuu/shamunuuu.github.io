@@ -6,113 +6,132 @@
     <title>ASW | AI & Smart Workflows</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
     <style>
+        /* Premium Global Styles */
         body { margin: 0; font-family: 'Inter', sans-serif; background-color: #F8F9FA; color: #1E293B; overflow-x: hidden; }
         * { box-sizing: border-box; }
         
-        .hero { text-align: center; padding: 120px 20px 140px 20px; background: linear-gradient(135deg, #0B3954 0%, #062336 100%); color: white; }
+        /* Hero Section */
+        .hero { text-align: center; padding: 120px 20px 140px 20px; background: linear-gradient(135deg, #0B3954 0%, #062336 100%); color: white; position: relative; }
         .hero h1 { font-size: 4.5rem; margin-bottom: 25px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; }
         .hero h1 span { color: #10B981; }
-        .hero p { font-size: 1.3rem; color: #94A3B8; max-width: 750px; margin: 0 auto 40px auto; line-height: 1.7; }
-        .cta-btn { background: #10B981; color: white; border: none; padding: 18px 45px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; cursor: pointer; text-decoration: none; display: inline-block; }
+        .hero p { font-size: 1.3rem; color: #94A3B8; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.7; }
+        .cta-btn { background: #10B981; color: white; border: none; padding: 18px 45px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4); text-decoration: none; display: inline-block; }
+        .cta-btn:hover { background: #059669; transform: translateY(-2px); }
 
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: -60px auto 60px auto; padding: 0 20px; position: relative; }
-        .service-card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border-top: 4px solid #10B981; }
-        .service-card h3 { color: #0B3954; font-size: 1.4rem; margin-top: 0; margin-bottom: 15px; }
-        .service-card p { color: #475569; line-height: 1.6; margin: 0; }
+        /* Core Services Grid (Expanded to 6 pillars) */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1200px; margin: -60px auto 60px auto; padding: 0 20px; position: relative; z-index: 10; }
+        .service-card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border-top: 4px solid #10B981; transition: transform 0.3s ease; }
+        .service-card:hover { transform: translateY(-10px); }
+        .service-card h3 { color: #0B3954; font-size: 1.4rem; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .service-card p { color: #475569; line-height: 1.6; margin: 0; font-size: 1rem; }
 
+        /* Workflow Visualizer */
         .visualizer-container { max-width: 1000px; margin: 0 auto 80px auto; background: white; padding: 50px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .nodes-wrapper { display: flex; justify-content: space-between; align-items: center; position: relative; flex-wrap: wrap; gap: 20px; margin-top: 40px; }
         .nodes-wrapper::before { content: ''; position: absolute; top: 50%; left: 5%; right: 5%; height: 3px; background: #e2e8f0; z-index: 0; transform: translateY(-50%); }
-        .node { background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 20px; text-align: center; width: 160px; z-index: 1; position: relative; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .node { background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 20px; text-align: center; width: 160px; z-index: 1; position: relative; transition: 0.3s; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .node:hover { border-color: #10B981; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2); }
         .node-icon { font-size: 2.5rem; margin-bottom: 12px; }
         .node-title { font-weight: 700; color: #0B3954; font-size: 0.95rem; }
 
+        /* Action Section (Trust Panel + Contact Form) */
         .action-section { max-width: 1200px; margin: 0 auto 100px auto; display: flex; gap: 40px; padding: 0 20px; flex-wrap: wrap; }
-        .roi-card { background: white; padding: 50px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); flex: 1; min-width: 350px; border: 1px solid #e2e8f0; }
-        .roi-card h3 { color: #0B3954; font-size: 2rem; margin-top: 0; }
-        .slider-group { margin-bottom: 35px; }
-        .slider-group label { font-weight: 600; display: block; margin-bottom: 15px; }
-        input[type="range"] { width: 100%; accent-color: #10B981; height: 6px; }
-        .roi-result { background: #F8F9FA; padding: 30px; border-radius: 12px; text-align: center; border: 2px dashed #10B981; }
-        .roi-result span { display: block; font-size: 3.5rem; font-weight: 800; color: #10B981; }
+        .trust-card { background: #0B3954; color: white; padding: 50px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); flex: 1; min-width: 350px; }
+        .trust-card h3 { font-size: 2.2rem; margin-top: 0; margin-bottom: 20px; }
+        .trust-card p { color: #cbd5e1; font-size: 1.1rem; line-height: 1.7; margin-bottom: 30px; }
+        .checklist { list-style: none; padding: 0; margin: 0; }
+        .checklist li { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; font-size: 1.1rem; font-weight: 500; }
+        .checklist li span { background: rgba(16, 185, 129, 0.2); color: #10B981; padding: 5px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; }
     </style>
 </head>
 <body>
 
+    <!-- Modular Header -->
     <script src="header.js"></script>
 
+    <!-- HERO SECTION -->
     <div class="hero">
-        <h1>We Give You Your <span>Time</span> Back</h1>
-        <p>Our only priority is saving you hours of manual work. We build custom coded solutions, deploy intelligent AI, and connect platforms like Zapier, n8n, and Make so your business runs on autopilot.</p>
-        <a href="#audit" class="cta-btn">Calculate Your Savings</a>
+        <h1>We Build Your <span>Automation Chain</span></h1>
+        <p>From Custom GPTs and AI Voice Bots to deep integrations using n8n, Make, Zapier, or custom code. We connect your apps, socials, and databases so your business runs on complete autopilot.</p>
+        <a href="#audit" class="cta-btn">Get a Free Strategy Plan</a>
     </div>
 
+    <!-- CORE SERVICES GRID -->
     <div class="services-grid">
         <div class="service-card">
+            <h3>🤖 Custom GPTs & Chatbots</h3>
+            <p>We design intelligent AI chatbots and custom GPTs trained exclusively on your business data to handle customer support, lead qualification, and internal queries 24/7.</p>
+        </div>
+        <div class="service-card">
+            <h3>📞 AI Voice Bots</h3>
+            <p>Deploy conversational AI voice agents capable of handling inbound customer service calls or making smart, human-like outbound sales calls automatically.</p>
+        </div>
+        <div class="service-card">
+            <h3>💬 Omnichannel Messaging</h3>
+            <p>We connect WhatsApp, Telegram, Instagram, and SMS into a seamless chain of automation. Engage leads instantly on the platforms they already use.</p>
+        </div>
+        <div class="service-card">
+            <h3>⚙️ Make, Zapier & n8n</h3>
+            <p>We are experts in third-party platforms. We build robust, chained workflows that silently route your data in the background and eliminate manual entry.</p>
+        </div>
+        <div class="service-card">
             <h3>💻 Custom Code Automations</h3>
-            <p>Don't want to rely on third-party platforms? We write custom, self-hosted automation scripts that do exactly what you need without subscription limits.</p>
+            <p>When off-the-shelf platforms aren't enough, we write custom, self-hosted automation scripts that do exactly what you need without subscription limits.</p>
         </div>
         <div class="service-card">
-            <h3>⚙️ Make & n8n Experts</h3>
-            <p>We build robust workflows in n8n, Make, and Zapier to silently route your data in the background and eliminate manual entry.</p>
-        </div>
-        <div class="service-card">
-            <h3>🔗 App & E-com Integrations</h3>
-            <p>We connect every app you use. Whether it's Shopify, Amazon, or your CRM, we make sure your systems talk to each other flawlessly.</p>
-        </div>
-        <div class="service-card">
-            <h3>🤖 Custom AI & Chatbots</h3>
-            <p>We build intelligent AI agents and custom GPTs trained on your exact business data to handle customer support and internal workflows.</p>
+            <h3>🔗 E-com & App Integrations</h3>
+            <p>We connect every app you use. Whether it's syncing Shopify orders, updating Amazon inventory, or managing your CRM, your systems will communicate flawlessly.</p>
         </div>
     </div>
 
+    <!-- WORKFLOW VISUALIZER -->
     <div class="visualizer-container">
         <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #0B3954; font-size: 2rem; margin-top: 0; margin-bottom: 15px;">How Automation Works</h2>
-            <p style="color: #64748B; font-size: 1.1rem;">We map your exact business process and build a silent engine that does it for you.</p>
+            <h2 style="color: #0B3954; font-size: 2rem; margin-top: 0; margin-bottom: 15px;">How Chained Automation Works</h2>
+            <p style="color: #64748B; font-size: 1.1rem;">We map your exact business process and build a silent engine that connects every touchpoint.</p>
         </div>
         <div class="nodes-wrapper">
-            <div class="node"><div class="node-icon">📥</div><div class="node-title">Trigger Event</div></div>
-            <div class="node" style="border-color: #10B981; border-width: 3px;"><div class="node-icon">🧠</div><div class="node-title">ASW Logic Engine</div></div>
-            <div class="node"><div class="node-icon">⚡</div><div class="node-title">Execute Action</div></div>
-            <div class="node"><div class="node-icon">✅</div><div class="node-title">Task Complete</div></div>
+            <div class="node">
+                <div class="node-icon">📥</div>
+                <div class="node-title">WhatsApp Message</div>
+            </div>
+            <div class="node" style="border-color: #10B981; border-width: 3px;">
+                <div class="node-icon">🧠</div>
+                <div class="node-title">Custom AI Bot</div>
+            </div>
+            <div class="node">
+                <div class="node-icon">⚡</div>
+                <div class="node-title">n8n Data Route</div>
+            </div>
+            <div class="node">
+                <div class="node-icon">✅</div>
+                <div class="node-title">CRM Updated</div>
+            </div>
         </div>
     </div>
 
+    <!-- ACTION SECTION (Trust Panel + Form) -->
     <div class="action-section" id="audit">
-        <div class="roi-card">
-            <h3>Calculate Your ROI</h3>
-            <p style="color: #64748B; margin-bottom: 30px; font-size: 1.1rem;">See exactly how much money manual tasks cost your business every year.</p>
+        
+        <!-- Trust Text Panel (Replaces Calculator) -->
+        <div class="trust-card">
+            <h3>Stop doing robot work.</h3>
+            <p>Tell us what process is slowing your business down. We will analyze your tech stack and show you exactly how AI and chained automations can fix it.</p>
             
-            <div class="slider-group">
-                <label>Hours wasted per week: <span id="hoursVal" style="color: #0B3954;">15</span> hrs</label>
-                <input type="range" id="hoursSlider" min="5" max="80" value="15" oninput="updateROI()">
-            </div>
-            <div class="slider-group">
-                <label>Average hourly pay: $<span id="rateVal" style="color: #0B3954;">25</span>/hr</label>
-                <input type="range" id="rateSlider" min="15" max="150" value="25" oninput="updateROI()">
-            </div>
-            <div class="roi-result">
-                <span id="savingsResult">$19,500</span>
-                <p style="color: #475569; font-weight: 600; text-transform: uppercase;">Potential Yearly Savings</p>
-            </div>
+            <ul class="checklist">
+                <li><span>✓</span> Reduce manual data entry to zero</li>
+                <li><span>✓</span> Respond to customers in seconds, not hours</li>
+                <li><span>✓</span> Connect scattered apps into one system</li>
+                <li><span>✓</span> Scale operations without hiring more staff</li>
+            </ul>
         </div>
 
         <!-- CALLS YOUR MODULAR FORM -->
         <script src="contact-form.js"></script>
+
     </div>
 
-    <script>
-        function updateROI() {
-            let hours = document.getElementById('hoursSlider').value;
-            let rate = document.getElementById('rateSlider').value;
-            document.getElementById('hoursVal').innerText = hours;
-            document.getElementById('rateVal').innerText = rate;
-            let savings = hours * rate * 52;
-            document.getElementById('savingsResult').innerText = '$' + savings.toLocaleString();
-        }
-    </script>
-
+    <!-- Modular Footer & Chatbot -->
     <script src="footer.js"></script>
     <script src="chatbot.js"></script>
 
