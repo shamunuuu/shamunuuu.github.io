@@ -18,21 +18,12 @@
         .cta-btn { background: #10B981; color: white; border: none; padding: 18px 45px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4); text-decoration: none; display: inline-block; }
         .cta-btn:hover { background: #059669; transform: translateY(-2px); }
 
-        /* Core Services Grid (Expanded to 6 pillars) */
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1200px; margin: -60px auto 60px auto; padding: 0 20px; position: relative; z-index: 10; }
+        /* Core Services Grid */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1200px; margin: -60px auto 100px auto; padding: 0 20px; position: relative; z-index: 10; }
         .service-card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border-top: 4px solid #10B981; transition: transform 0.3s ease; }
         .service-card:hover { transform: translateY(-10px); }
         .service-card h3 { color: #0B3954; font-size: 1.4rem; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
         .service-card p { color: #475569; line-height: 1.6; margin: 0; font-size: 1rem; }
-
-        /* Workflow Visualizer */
-        .visualizer-container { max-width: 1000px; margin: 0 auto 80px auto; background: white; padding: 50px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .nodes-wrapper { display: flex; justify-content: space-between; align-items: center; position: relative; flex-wrap: wrap; gap: 20px; margin-top: 40px; }
-        .nodes-wrapper::before { content: ''; position: absolute; top: 50%; left: 5%; right: 5%; height: 3px; background: #e2e8f0; z-index: 0; transform: translateY(-50%); }
-        .node { background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 20px; text-align: center; width: 160px; z-index: 1; position: relative; transition: 0.3s; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .node:hover { border-color: #10B981; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2); }
-        .node-icon { font-size: 2.5rem; margin-bottom: 12px; }
-        .node-title { font-weight: 700; color: #0B3954; font-size: 0.95rem; }
 
         /* Action Section (Trust Panel + Contact Form) */
         .action-section { max-width: 1200px; margin: 0 auto 100px auto; display: flex; gap: 40px; padding: 0 20px; flex-wrap: wrap; }
@@ -51,8 +42,8 @@
 
     <!-- HERO SECTION -->
     <div class="hero">
-        <h1>We Build Your <span>Automation Chain</span></h1>
-        <p>From Custom GPTs and AI Voice Bots to deep integrations using n8n, Make, Zapier, or custom code. We connect your apps, socials, and databases so your business runs on complete autopilot.</p>
+        <h1>Reclaim Your Time. Let <span>AI</span> Do The Work.</h1>
+        <p>We integrate intelligent AI bots and seamless automations directly into your business. Stop grinding through repetitive tasks—we build systems that create effortless leverage so your operations run themselves.</p>
         <a href="#audit" class="cta-btn">Get a Free Strategy Plan</a>
     </div>
 
@@ -60,7 +51,7 @@
     <div class="services-grid">
         <div class="service-card">
             <h3>🤖 Custom GPTs & Chatbots</h3>
-            <p>We design intelligent AI chatbots and custom GPTs trained exclusively on your business data to handle customer support, lead qualification, and internal queries 24/7.</p>
+            <p>We design intelligent AI chatbots and custom GPTs trained exclusively on your business data to handle customer support, lead qualification, and complex queries 24/7.</p>
         </div>
         <div class="service-card">
             <h3>📞 AI Voice Bots</h3>
@@ -68,61 +59,35 @@
         </div>
         <div class="service-card">
             <h3>💬 Omnichannel Messaging</h3>
-            <p>We connect WhatsApp, Telegram, Instagram, and SMS into a seamless chain of automation. Engage leads instantly on the platforms they already use.</p>
+            <p>We connect WhatsApp, Telegram, Instagram, and SMS into a smart ecosystem. Engage leads and resolve issues instantly on the platforms they already use.</p>
         </div>
         <div class="service-card">
             <h3>⚙️ Make, Zapier & n8n</h3>
-            <p>We are experts in third-party platforms. We build robust, chained workflows that silently route your data in the background and eliminate manual entry.</p>
+            <p>We are experts in third-party platforms. We build robust workflows that silently route your data in the background, completely eliminating manual entry and human error.</p>
         </div>
         <div class="service-card">
             <h3>💻 Custom Code Automations</h3>
-            <p>When off-the-shelf platforms aren't enough, we write custom, self-hosted automation scripts that do exactly what you need without subscription limits.</p>
+            <p>When off-the-shelf platforms aren't enough, we write custom, self-hosted automation scripts that execute exactly what you need with ultimate precision.</p>
         </div>
         <div class="service-card">
             <h3>🔗 E-com & App Integrations</h3>
-            <p>We connect every app you use. Whether it's syncing Shopify orders, updating Amazon inventory, or managing your CRM, your systems will communicate flawlessly.</p>
-        </div>
-    </div>
-
-    <!-- WORKFLOW VISUALIZER -->
-    <div class="visualizer-container">
-        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #0B3954; font-size: 2rem; margin-top: 0; margin-bottom: 15px;">How Chained Automation Works</h2>
-            <p style="color: #64748B; font-size: 1.1rem;">We map your exact business process and build a silent engine that connects every touchpoint.</p>
-        </div>
-        <div class="nodes-wrapper">
-            <div class="node">
-                <div class="node-icon">📥</div>
-                <div class="node-title">WhatsApp Message</div>
-            </div>
-            <div class="node" style="border-color: #10B981; border-width: 3px;">
-                <div class="node-icon">🧠</div>
-                <div class="node-title">Custom AI Bot</div>
-            </div>
-            <div class="node">
-                <div class="node-icon">⚡</div>
-                <div class="node-title">n8n Data Route</div>
-            </div>
-            <div class="node">
-                <div class="node-icon">✅</div>
-                <div class="node-title">CRM Updated</div>
-            </div>
+            <p>We connect every tool you use. Whether it's syncing Shopify orders, managing Amazon inventory, or updating your CRM, your systems will communicate flawlessly.</p>
         </div>
     </div>
 
     <!-- ACTION SECTION (Trust Panel + Form) -->
     <div class="action-section" id="audit">
         
-        <!-- Trust Text Panel (Replaces Calculator) -->
+        <!-- Trust Text Panel -->
         <div class="trust-card">
-            <h3>Stop doing robot work.</h3>
-            <p>Tell us what process is slowing your business down. We will analyze your tech stack and show you exactly how AI and chained automations can fix it.</p>
+            <h3>Delegate the grind.</h3>
+            <p>Tell us what tasks are eating up your day. We will analyze your workflow and show you exactly how custom AI agents and smart integrations can take them off your plate permanently.</p>
             
             <ul class="checklist">
-                <li><span>✓</span> Reduce manual data entry to zero</li>
-                <li><span>✓</span> Respond to customers in seconds, not hours</li>
-                <li><span>✓</span> Connect scattered apps into one system</li>
-                <li><span>✓</span> Scale operations without hiring more staff</li>
+                <li><span>✓</span> Introduce true leverage into your business</li>
+                <li><span>✓</span> Deploy AI to handle tasks instantly</li>
+                <li><span>✓</span> Connect your scattered apps into one ecosystem</li>
+                <li><span>✓</span> Scale effortlessly without increasing headcount</li>
             </ul>
         </div>
 
