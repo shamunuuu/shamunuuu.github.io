@@ -24,7 +24,7 @@ document.write(`
         <!-- NEW BLOG LINK -->
         <a href="blog.html" style="color: white; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='white'">Blog</a>
         
-        <a href="contact.html" style="background: #10B981; color: white; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-weight: 700; transition: background 0.3s; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10B981'">Let's Get Started</a>
+        <a href="contact.js" style="background: #10B981; color: white; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-weight: 700; transition: background 0.3s; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10B981'">Let's Get Started</a>
       </nav>
 
     </div>
