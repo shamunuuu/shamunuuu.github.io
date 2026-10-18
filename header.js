@@ -4,7 +4,7 @@ document.write(`
       
       <!-- LOGO IMAGE (gpg) -->
       <a href="index.html" style="display: flex; align-items: center; text-decoration: none;">
-        <img src="gpg" alt="ASW Logo" style="height: 40px; width: auto; max-width: 160px; object-fit: contain;">
+        <img src="logo.png" alt="ASW Logo" style="height: 40px; width: auto; max-width: 160px; object-fit: contain;">
       </a>
 
       <!-- MOBILE-FRIENDLY NAVIGATION -->
