@@ -4,7 +4,7 @@ document.write(`
       <p style="color: #64748B; margin-bottom: 30px; font-size: 1.1rem;">Tell us what's eating up your time. We'll show you how custom AI and automation can fix it.</p>
       
       <!-- REPLACE YOUR_FORM_ID BELOW WITH YOUR ACTUAL FORMSPREE ID -->
-      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <form action="https://formspree.io/f/xwvqpwjj" method="POST">
           
           <input type="text" name="name" placeholder="Your Full Name" required style="width: 100%; padding: 18px; margin-bottom: 20px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 1rem; background: #F8F9FA; box-sizing: border-box; transition: 0.3s; outline: none;" onfocus="this.style.borderColor='#10B981'; this.style.background='white';" onblur="this.style.borderColor='#e2e8f0'; this.style.background='#F8F9FA';">
           
